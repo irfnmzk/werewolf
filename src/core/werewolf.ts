@@ -1,37 +1,23 @@
 import { Service } from "typedi";
 import { Server } from "./server";
 import { TelegramService } from "./telegram";
-import { Command } from "../types";
+import { GameManager } from "../structure/GameManager";
+import { CommandManager } from "../structure/CommandManager";
 
 @Service()
 export class Werewolf {
-  private commands: Map<string, Command> = new Map();
-
   constructor(
     private readonly server: Server,
-    private readonly telegram: TelegramService
-  ) {
-    this._loadCommands();
-  }
+    private readonly telegram: TelegramService,
+    private readonly commandManager: CommandManager,
+    private readonly gameManager: GameManager
+  ) {}
 
   public start() {
     this.telegram.setup();
+    this.commandManager.setup();
+
     this.server.start();
-  }
-
-  private async _loadCommands() {
-    const COMMANDS = await import("../commands");
-
-    for (const CommandClass of Object.values(COMMANDS)) {
-      const command = new CommandClass();
-
-      this.commands.set(command.name, command);
-
-      command.alias.forEach((item) => {
-        this.commands.set(item, command);
-      });
-    }
-
-    console.log(this.commands.size);
+    this.gameManager.start();
   }
 }

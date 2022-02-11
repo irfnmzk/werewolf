@@ -1,11 +1,12 @@
-import TelegramBot from "node-telegram-bot-api";
+import TelegramBot, { Message } from "node-telegram-bot-api";
 import { Service } from "typedi";
+import { CommandManager } from "../structure/CommandManager";
 
 @Service()
 export class TelegramService {
   public bot: TelegramBot;
 
-  constructor() {
+  constructor(private readonly commands: CommandManager) {
     const polling = process.env.NODE_ENV !== "production";
     this.bot = new TelegramBot(process.env.TELEGRAM_TOKEN!, { polling });
   }
@@ -15,8 +16,15 @@ export class TelegramService {
   }
 
   private _setupHandler() {
-    this.bot.on("text", (ctx) => {
-      this.bot.sendMessage(ctx.chat.id, "hello");
-    });
+    this.bot.on("text", this._handleText);
   }
+
+  private _handleText = (msg: Message) => {
+    if (!msg.text || !msg.text.startsWith("/")) return;
+
+    const command = this.commands.parse(msg.text);
+    if (!command) return;
+
+    this.commands.execute(command.name, msg);
+  };
 }
