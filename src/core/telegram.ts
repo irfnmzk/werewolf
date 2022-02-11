@@ -25,6 +25,8 @@ export class TelegramService {
     const command = this.commands.parse(msg.text);
     if (!command) return;
 
+    console.log(msg);
+
     this.commands.execute(command.name, msg);
   };
 }

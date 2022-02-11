@@ -10,7 +10,7 @@ export interface GameSetting {
 }
 
 export interface GroupChat {
-  id: string;
+  id: number;
 }
 
 export const DefaultGameSetting: GameSetting = {
