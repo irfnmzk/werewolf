@@ -1,6 +1,6 @@
 import { version } from "../../../package.json";
 
-import { Command } from "../../structure/Command";
+import { Command } from "../../manager/Command";
 import { CommandInterface, CommandContext } from "../../types";
 
 export class VersionCommand extends Command implements CommandInterface {

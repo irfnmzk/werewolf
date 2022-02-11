@@ -1,8 +1,8 @@
 import { Service } from "typedi";
 import { Server } from "./server";
 import { TelegramService } from "./telegram";
-import { GameManager } from "../structure/GameManager";
-import { CommandManager } from "../structure/CommandManager";
+import { GameManager } from "../manager/GameManager";
+import { CommandManager } from "../manager/CommandManager";
 
 @Service()
 export class Werewolf {

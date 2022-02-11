@@ -1,6 +1,6 @@
 import TelegramBot, { Message } from "node-telegram-bot-api";
 import { Service } from "typedi";
-import { CommandManager } from "../structure/CommandManager";
+import { CommandManager } from "../manager/CommandManager";
 
 @Service()
 export class TelegramService {

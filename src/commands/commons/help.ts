@@ -1,4 +1,4 @@
-import { Command } from "../../structure/Command";
+import { Command } from "../../manager/Command";
 import { CommandInterface, CommandContext } from "../../types";
 
 export class HelpCommand extends Command implements CommandInterface {
