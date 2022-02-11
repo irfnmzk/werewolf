@@ -1,4 +1,5 @@
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
+import { TelegramService } from "../core/telegram";
 import { Game } from "../game/structures/Game";
 
 const TICK_INTERVAL = 1000; // 1 seconds
@@ -22,7 +23,9 @@ export class GameManager {
   public createGame(groupId: number): Game | undefined {
     if (this.games.has(groupId)) return;
 
-    const game = new Game({ id: groupId });
+    const telegram = Container.get(TelegramService);
+
+    const game = new Game({ id: groupId }, telegram.bot);
     this.games.set(groupId, game);
 
     return game;
@@ -31,7 +34,8 @@ export class GameManager {
   private _runTick = () => {
     this.games.forEach((game) => {
       try {
-        console.log(game);
+        console.log("update game");
+        game.update();
       } catch (err) {
         console.error(err);
       }

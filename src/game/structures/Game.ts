@@ -28,16 +28,11 @@ export class Game {
   public gameStarted: number = Date.now();
   public phaseStarted: number = Date.now();
 
-  private bot: TelegramBot;
-
   constructor(
     public readonly group: GroupChat,
+    private readonly bot: TelegramBot,
     public readonly setting: GameSetting = DefaultGameSetting
-  ) {
-    const telgram = Container.get(TelegramService);
-
-    this.bot = telgram.bot;
-  }
+  ) {}
 
   public update() {
     const phase = this.phase;
@@ -52,7 +47,7 @@ export class Game {
     const secondRemain = this.setting.lobbyTime - diff;
 
     const timeStamp = [60, 30, 10, 5, 3, 2, 1];
-    if (timeStamp.includes(secondRemain)) {
+    if (timeStamp.includes(secondRemain) || secondRemain < 0) {
       this.bot.sendMessage(
         this.group.id,
         `Game akan di mulai dalam ${secondRemain} detik`
